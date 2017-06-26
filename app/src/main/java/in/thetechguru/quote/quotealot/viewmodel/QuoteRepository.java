@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room;
 import android.util.Log;
 
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -28,13 +29,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 class QuoteRepository {
-    private QuoteAPI quoteAPI;
-    private QuoteDAO quoteDAO;
-    private  Executor executor;
+
+    private QuoteAPI quoteAPI;   //for webservice call
+    private QuoteDAO quoteDAO;   //for db access
+    private  Executor executor;  //threading, apparently we are crazy if we call db on main thread!
 
     QuoteRepository(){
 
         this.executor = Executors.newSingleThreadExecutor();
+
+        //get the room db object, and thus DAO
         MyQuoteDB db = Room.databaseBuilder(MyAPP.getContext(),
                 MyQuoteDB.class, "database-name").build();
         quoteDAO=db.quoteDAO();
@@ -42,18 +46,19 @@ class QuoteRepository {
     }
 
     // ...
-    LiveData<Quote> getQuote(String category, int count) {
+    LiveData<List<Quote>> getQuote(String category, int count) {
         refreshQuote(category);
         return quoteDAO.getQuote();
     }
 
     private void refreshQuote(String category){
-        final MutableLiveData<Quote> data = new MutableLiveData<>();
 
+        //logging purpose
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
+        //build retrofit object and call web service
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("https://andruxnet-random-famous-quotes.p.mashape.com/")
                 .client(client)
@@ -63,21 +68,21 @@ class QuoteRepository {
 
         quoteAPI = retrofit.create(QuoteAPI.class);
 
-        quoteAPI.getQuote(category, 1).enqueue(new Callback<Quote>() {
+        //enqueue makes sure call is asynchronous
+        quoteAPI.getQuote(category, 10).enqueue(new Callback<List<Quote>>() {
             @Override
-            public void onResponse(Call<Quote> call, final Response<Quote> response) {
-                //data.setValue(response.body());
-                //Log.v(Constants.TAG,"Webservice!");
+            public void onResponse(Call<List<Quote>> call, final Response<List<Quote>> response) {
                 Executors.newSingleThreadExecutor().execute(new Runnable() {
                     @Override
                     public void run() {
+                        //insert the quotes in db, UI will be informed, LiveData duh!
                         quoteDAO.save(response.body());
                     }
                 });
             }
 
             @Override
-            public void onFailure(Call<Quote> call, Throwable t) {
+            public void onFailure(Call<List<Quote>> call, Throwable t) {
                 Log.v(Constants.TAG, t.getMessage());
             }
         });

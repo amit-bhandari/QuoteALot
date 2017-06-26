@@ -35,14 +35,17 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //currently ignored
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        //create fragment object only when its not already created
         if(savedInstanceState==null) {
             //load quotes fragment
             FragmentQuote fragmentQuote = new FragmentQuote();
             Bundle args = new Bundle();
-            args.putString(Constants.stringConstants.CATEGORY_ID, Constants.quoteParam.MOVIES);
+            args.putString(Constants.stringConstants.CATEGORY_ID, Constants.quoteParam.FAMOUS);
             fragmentQuote.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()

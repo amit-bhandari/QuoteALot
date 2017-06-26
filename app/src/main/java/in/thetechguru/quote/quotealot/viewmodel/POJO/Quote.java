@@ -9,10 +9,12 @@ import java.io.Serializable;
  * Created by AB on 6/24/2017.
  */
 
+//POJO
+
 @Entity
 public class Quote implements Serializable{
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id=0;
 
     private String quote;

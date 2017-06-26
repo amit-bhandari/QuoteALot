@@ -3,6 +3,8 @@ package in.thetechguru.quote.quotealot.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.List;
+
 import in.thetechguru.quote.quotealot.viewmodel.POJO.Quote;
 
 /**
@@ -10,7 +12,7 @@ import in.thetechguru.quote.quotealot.viewmodel.POJO.Quote;
  */
 
 public class QuoteViewModel extends ViewModel {
-    private LiveData<Quote> quote;
+    private LiveData<List<Quote>> quote;
     private String category;
     private int count;
     QuoteRepository quoteRepository;
@@ -25,7 +27,7 @@ public class QuoteViewModel extends ViewModel {
         quote = quoteRepository.getQuote(category, count);
     }
 
-    public LiveData<Quote> getQuote(){
+    public LiveData<List<Quote>> getQuote(){
         return quote;
     }
 

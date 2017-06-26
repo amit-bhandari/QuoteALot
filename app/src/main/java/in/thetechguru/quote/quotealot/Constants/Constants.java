@@ -14,6 +14,7 @@ public class Constants {
 
     public interface quoteParam {
         String MOVIES = "movies";
+        String FAMOUS = "famous";
         int count = 10;
     }
 

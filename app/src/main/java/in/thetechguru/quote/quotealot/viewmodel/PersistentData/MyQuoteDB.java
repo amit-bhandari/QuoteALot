@@ -10,7 +10,7 @@ import in.thetechguru.quote.quotealot.viewmodel.POJO.Quote;
  * Created by AB on 6/24/2017.
  */
 
-@Database(entities = {Quote.class}, version = 3)
+@Database(entities = {Quote.class}, version = 4)
 public abstract class MyQuoteDB extends RoomDatabase {
 
     public abstract QuoteDAO quoteDAO();
