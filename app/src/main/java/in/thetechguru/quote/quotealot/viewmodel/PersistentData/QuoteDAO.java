@@ -10,6 +10,7 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import in.thetechguru.quote.quotealot.viewmodel.POJO.Quote;
+import in.thetechguru.quote.quotealot.viewmodel.POJO.SavedQuote;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
@@ -21,9 +22,20 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface QuoteDAO {
+
     @Insert(onConflict = REPLACE)
-    void save(List<Quote> quote);
+    void cacheOnDB(List<Quote> quote);
 
     @Query("SELECT * FROM quote")
-    LiveData<List<Quote>> getQuote();
+    LiveData<List<Quote>> getCachedQuotes();
+
+    //for saved quotes (starred quotes)
+    @Insert(onConflict = REPLACE)
+    void saveOnDevice(SavedQuote quote);
+
+    @Query("SELECT * FROM savedquote")
+    List<SavedQuote> getSavedQuotes();
+
+    @Delete
+    void deleteQuote(SavedQuote quote);
 }

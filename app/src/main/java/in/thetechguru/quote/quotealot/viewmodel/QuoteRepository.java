@@ -1,7 +1,6 @@
 package in.thetechguru.quote.quotealot.viewmodel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Room;
 import android.util.Log;
 
@@ -14,6 +13,7 @@ import in.thetechguru.quote.quotealot.Constants.Constants;
 import in.thetechguru.quote.quotealot.MyAPP;
 import in.thetechguru.quote.quotealot.viewmodel.OnlineData.QuoteAPI;
 import in.thetechguru.quote.quotealot.viewmodel.POJO.Quote;
+import in.thetechguru.quote.quotealot.viewmodel.POJO.SavedQuote;
 import in.thetechguru.quote.quotealot.viewmodel.PersistentData.MyQuoteDB;
 import in.thetechguru.quote.quotealot.viewmodel.PersistentData.QuoteDAO;
 import okhttp3.OkHttpClient;
@@ -46,9 +46,16 @@ class QuoteRepository {
     }
 
     // ...
-    LiveData<List<Quote>> getQuote(String category, int count) {
+    LiveData<List<Quote>> getQuoteOnline(String category, int count) {
+        //fetch new quotes
         refreshQuote(category);
-        return quoteDAO.getQuote();
+        //meanwhile show db cached quotes
+        return quoteDAO.getCachedQuotes();
+    }
+
+    List<SavedQuote> getSavedQuote() {
+        //no need to fetch online, directly return data stored in db
+        return quoteDAO.getSavedQuotes();
     }
 
     private void refreshQuote(String category){
@@ -76,7 +83,7 @@ class QuoteRepository {
                     @Override
                     public void run() {
                         //insert the quotes in db, UI will be informed, LiveData duh!
-                        quoteDAO.save(response.body());
+                        quoteDAO.cacheOnDB(response.body());
                     }
                 });
             }
@@ -88,4 +95,21 @@ class QuoteRepository {
         });
     }
 
+    void saveQuote(Quote quote){
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                quoteDAO.saveOnDevice(new SavedQuote(quote) );
+            }
+        });
+    }
+
+    void deleteQuote(SavedQuote quote){
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                quoteDAO.deleteQuote(quote);
+            }
+        });
+    }
 }

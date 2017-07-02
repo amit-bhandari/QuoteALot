@@ -13,13 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
-import in.thetechguru.quote.quotealot.Constants.Constants;
 import in.thetechguru.quote.quotealot.R;
-import in.thetechguru.quote.quotealot.adapter.AdapterQuotes;
+import in.thetechguru.quote.quotealot.adapter.AdapterQuotesOnline;
 import in.thetechguru.quote.quotealot.viewmodel.POJO.Quote;
 import in.thetechguru.quote.quotealot.viewmodel.QuoteViewModel;
 
@@ -27,18 +25,18 @@ import in.thetechguru.quote.quotealot.viewmodel.QuoteViewModel;
  * Created by AB on 6/24/2017.
  */
 
-public class FragmentQuote extends LifecycleFragment{
+public class FragmentQuoteOnline extends LifecycleFragment{
 
     private QuoteViewModel quoteViewModel; //data model
     private SwipeRefreshLayout swipeRefreshLayout;  //swipe to refresh data
     private RecyclerView recyclerView;
-    private AdapterQuotes adapterQuotes;
+    private AdapterQuotesOnline adapterQuotes;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quote,container,false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_quotes);
+        View view = inflater.inflate(R.layout.fragment_quote_online,container,false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_quotes_online);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_to_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -49,7 +47,8 @@ public class FragmentQuote extends LifecycleFragment{
         });
 
         //set up recycler view
-        adapterQuotes = new AdapterQuotes(getContext());
+        adapterQuotes = new AdapterQuotesOnline(getContext());
+
         recyclerView.setAdapter(adapterQuotes);
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext()));
 
@@ -62,12 +61,16 @@ public class FragmentQuote extends LifecycleFragment{
 
         //create dataModel object
         //remember, doesn't matter how many times this method called, same object will be returned
-        quoteViewModel = ViewModelProviders.of(this).get(QuoteViewModel.class);
-        quoteViewModel.init( getArguments().getString(Constants.stringConstants.CATEGORY_ID), Constants.quoteParam.count);
+        quoteViewModel = ViewModelProviders.of(getActivity()).get(QuoteViewModel.class);
+        quoteViewModel.init( getArguments().getString("category")
+                ,getArguments().getInt("count"));
+
+        //to cacheOnDB the quote, we need this reference in adapter
+        adapterQuotes.setModel(quoteViewModel);
 
         //observer data for any changes
         //no need to unregister this receiver anywhere, lifecycle aware components, duh
-        quoteViewModel.getQuote().observe(this, new Observer<List<Quote>>() {
+        quoteViewModel.getQuoteOnline().observe(this, new Observer<List<Quote>>() {
             @Override
             public void onChanged(@NonNull List<Quote> quote) {
                 if(quote.size()==0) return;;

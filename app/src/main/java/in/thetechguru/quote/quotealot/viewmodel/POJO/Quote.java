@@ -21,6 +21,7 @@ public class Quote implements Serializable{
     private String author;
     private String category;
 
+    private boolean saved = false;
 
     public String getQuote() {
         return quote;
@@ -52,5 +53,13 @@ public class Quote implements Serializable{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
 }
