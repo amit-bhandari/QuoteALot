@@ -17,6 +17,7 @@ public class ActivityMain extends AppCompatActivity {
     public void onBackPressed() {
         //just get it over with
         finish();
+        //
     }
 
     private final int COUNT = 10;
