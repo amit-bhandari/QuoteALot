@@ -9,4 +9,6 @@
 
     <color name="buttonColor">#840e53</color>
     <color name="buttonTextColor">#dadada</color>
+
+    <color name="transparent">#00ffffff</color>
 </resources>

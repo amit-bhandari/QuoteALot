@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -90,16 +91,16 @@ public class AdapterQuotesSaved extends RecyclerView.Adapter<AdapterQuotesSaved.
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView quote, author;
-        Button remove, share;
+        ImageView remove, share;
 
         MyViewHolder(View itemView) {
             super(itemView);
             quote = (TextView)itemView.findViewById(R.id.quote);
             author = (TextView)itemView.findViewById(R.id.author);
-            remove = (Button) itemView.findViewById(R.id.buttonRemove);
+            remove = (ImageView) itemView.findViewById(R.id.buttonRemove);
             remove.setOnClickListener(this);
 
-            share = (Button) itemView.findViewById(R.id.buttonShare);
+            share = (ImageView) itemView.findViewById(R.id.buttonShare);
             share.setOnClickListener(this);
             quote.setTypeface(type);
             author.setTypeface(type);

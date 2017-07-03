@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Quote A Lot</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Starred</string>
+    <string name="title_notifications">About</string>
 
     <string name="about"> This is sample application for demonstrating architectural components for android
     app design! If you are an android developer, You can follow links given below for source code of this application. But

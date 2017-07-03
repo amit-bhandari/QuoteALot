@@ -32,7 +32,7 @@ public class FragmentAbout extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
-        ((TextView)view.findViewById(R.id.about_text)).setText(getAboutString());
+
 
         githubLink = ((TextView)view.findViewById(R.id.github_link));
         siteLink = ((TextView)view.findViewById(R.id.site_link));
@@ -80,9 +80,4 @@ public class FragmentAbout extends android.support.v4.app.Fragment {
         siteLink.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private String getAboutString(){
-        StringBuffer about = new StringBuffer(getString(R.string.about));
-        about.append("\n\nlink");
-        return about.toString();
-    }
 }

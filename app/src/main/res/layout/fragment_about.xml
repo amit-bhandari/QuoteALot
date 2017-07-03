@@ -22,6 +22,9 @@
 
             <TextView
                 android:id="@+id/about_text"
+                android:text="@string/about"
+                android:textStyle="italic"
+                android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -30,6 +33,7 @@
 
             <TextView
                 android:id="@+id/github_link"
+                android:textSize="22sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -38,6 +42,7 @@
 
             <TextView
                 android:id="@+id/site_link"
+                android:textSize="22sp"
                 android:text="More info"
                 android:gravity="center"
                 android:layout_margin="5dp"

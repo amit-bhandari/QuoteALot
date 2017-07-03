@@ -10,13 +10,16 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import in.thetechguru.quote.quotealot.R;
 import in.thetechguru.quote.quotealot.viewmodel.POJO.Quote;
+import in.thetechguru.quote.quotealot.viewmodel.POJO.SavedQuote;
 import in.thetechguru.quote.quotealot.viewmodel.QuoteViewModel;
 
 /**
@@ -52,6 +55,12 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
         holder.quote.setText(quoteItems.get(position).getQuote());
         holder.author.setText(quoteItems.get(position).getAuthor());
 
+        if(quoteItems.get(position).isSaved()){
+            holder.save.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_black_24dp));
+        }else {
+            holder.save.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
+        }
+
         //just a fancy animation, nothing else
         setFadeAnimation(holder.itemView);
     }
@@ -82,16 +91,16 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView quote, author;
-        Button save, share;
+        ImageView save, share;
 
         MyViewHolder(View itemView) {
             super(itemView);
             quote = (TextView)itemView.findViewById(R.id.quote);
             author = (TextView)itemView.findViewById(R.id.author);
-            save = (Button) itemView.findViewById(R.id.buttonSave);
+            save = (ImageView) itemView.findViewById(R.id.buttonSave);
             save.setOnClickListener(this);
 
-            share = (Button) itemView.findViewById(R.id.buttonShare);
+            share = (ImageView) itemView.findViewById(R.id.buttonShare);
             share.setOnClickListener(this);
 
             quote.setTypeface(type);
@@ -102,10 +111,18 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.buttonSave:
-                    //to make sure online fragment known which quote is already saved
-                    quoteItems.get(getPosition()).setSaved(true);
-                    //cacheOnDB quote in different db
-                    quoteViewModel.saveQuote(quoteItems.get(getPosition()));
+
+                    if(quoteItems.get(getPosition()).isSaved()){
+                        quoteItems.get(getPosition()).setSaved(false);
+                        quoteViewModel.deleteQuote(new SavedQuote(quoteItems.get(getPosition())));
+                        save.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
+                    }else {
+                        save.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                        //to make sure online fragment known which quote is already saved
+                        quoteItems.get(getPosition()).setSaved(true);
+                        //cacheOnDB quote in different db
+                        quoteViewModel.saveQuote(quoteItems.get(getPosition()));
+                    }
                     break;
 
                 case R.id.buttonShare:
