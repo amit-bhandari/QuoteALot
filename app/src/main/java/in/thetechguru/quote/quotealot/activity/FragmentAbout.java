@@ -28,6 +28,7 @@ public class FragmentAbout extends android.support.v4.app.Fragment {
     TextView githubLink, siteLink;
     private final String GITHUB_URL = "http://github.com/amit-bhandari/QuoteALot";
     private final String SITE_URL = "http://localhost";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
