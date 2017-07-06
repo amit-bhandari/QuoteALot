@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#E91E63</color>
-    <color name="colorPrimaryDark">#C2185B</color>
-    <color name="colorPrimaryLight">#F8BBD0</color>
-    <color name="colorAccent">#009688</color>
-    <color name="colorPrimaryText">#212121</color>
-    <color name="colorSecondaryText">#757575</color>
-    <color name="colorIcons">#FFFFFF</color>
-    <color name="colorDivider">#BDBDBD</color>
+
+        <color name="colorPrimary">#FF9800</color>
+        <color name="colorPrimaryDark">#F57C00</color>
+        <color name="colorPrimaryLight">#FFECB3</color>
+        <color name="colorAccent">#03A9F4</color>
+        <color name="colorCircularTransparent">#4503A9F4</color>
+        <color name="colorPrimaryText">#212121</color>
+        <color name="colorSecondaryText">#757575</color>
+        <color name="colorIcons">#212121</color>
+        <color name="colorDivider">#BDBDBD</color>
 
 
     <color name="cardBackgroundColor">#8c5050</color>

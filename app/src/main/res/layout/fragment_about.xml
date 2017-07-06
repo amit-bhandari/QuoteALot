@@ -24,7 +24,7 @@
                 android:id="@+id/about_text"
                 android:text="@string/about"
                 android:textStyle="italic"
-                android:textSize="18sp"
+                android:textSize="25sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"

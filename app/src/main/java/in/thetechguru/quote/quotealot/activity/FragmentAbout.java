@@ -34,7 +34,7 @@ public class FragmentAbout extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         ((TextView)view.findViewById(R.id.about_text)).setTypeface(Typeface
-                .createFromAsset(getActivity().getAssets(),"fonts/angelina.TTF"));
+                .createFromAsset(getActivity().getAssets(),"fonts/ga.ttf"));
         githubLink = ((TextView)view.findViewById(R.id.github_link));
         siteLink = ((TextView)view.findViewById(R.id.site_link));
         setLinks();

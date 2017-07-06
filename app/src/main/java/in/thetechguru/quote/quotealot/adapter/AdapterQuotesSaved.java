@@ -37,7 +37,7 @@ public class AdapterQuotesSaved extends RecyclerView.Adapter<AdapterQuotesSaved.
             this.quoteItems=new ArrayList<>();
             inflater= LayoutInflater.from(context);
             this.context = context;
-            type = Typeface.createFromAsset(context.getAssets(),"fonts/angelina.TTF");
+            type = Typeface.createFromAsset(context.getAssets(),"fonts/ga.ttf");
         }
 
     public void setModel(final QuoteViewModel quoteViewModel){

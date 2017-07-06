@@ -1,11 +1,16 @@
 package in.thetechguru.quote.quotealot.adapter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -37,7 +42,7 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
         this.quoteItems=new ArrayList<>();
         inflater= LayoutInflater.from(context);
         this.context = context;
-        type = Typeface.createFromAsset(context.getAssets(),"fonts/angelina.TTF");
+        type = Typeface.createFromAsset(context.getAssets(),"fonts/ga.ttf");
     }
 
     public void setModel(final QuoteViewModel quoteViewModel){
@@ -59,6 +64,12 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
             holder.save.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_black_24dp));
         }else {
             holder.save.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
+        }
+
+        if(quoteItems.get(holder.getPosition()).isSaved()){
+            holder.itemView.findViewById(R.id.circularReveal).setVisibility(View.VISIBLE);
+        }else {
+            holder.itemView.findViewById(R.id.circularReveal).setVisibility(View.INVISIBLE);
         }
 
         //just a fancy animation, nothing else
@@ -92,9 +103,11 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView quote, author;
         ImageView save, share;
+        View itemView;
 
         MyViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             quote = (TextView)itemView.findViewById(R.id.quote);
             author = (TextView)itemView.findViewById(R.id.author);
             save = (ImageView) itemView.findViewById(R.id.buttonSave);
@@ -123,6 +136,9 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
                         //cacheOnDB quote in different db
                         quoteViewModel.saveQuote(quoteItems.get(getPosition()));
                     }
+
+                    circularReveal();
+
                     break;
 
                 case R.id.buttonShare:
@@ -141,6 +157,37 @@ public class AdapterQuotesOnline extends RecyclerView.Adapter<AdapterQuotesOnlin
 
         private String getSharableString(Quote quote){
             return quote.getQuote() + "\n" + quote.getAuthor() + "\n" + "Shared via QuoteALot!";
+        }
+
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        private void circularReveal(){
+            if(quoteItems.get(getPosition()).isSaved()) {
+                View myView = itemView.findViewById(R.id.circularReveal);
+                int cx = myView.getWidth() / 2;
+                int cy = myView.getHeight() / 2;
+                float finalRadius = (float) Math.hypot(cx, cy);
+                Animator anim =
+                        ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+                myView.setVisibility(View.VISIBLE);
+                anim.start();
+            }else {
+                // previously visible view
+                final View myView = itemView.findViewById(R.id.circularReveal);
+
+                int cx = myView.getWidth() / 2;
+                int cy = myView.getHeight() / 2;
+                float initialRadius = (float) Math.hypot(cx, cy);
+                Animator anim =
+                        ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0);
+                anim.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        myView.setVisibility(View.INVISIBLE);
+                    }
+                });
+                anim.start();
+            }
         }
     }
 }

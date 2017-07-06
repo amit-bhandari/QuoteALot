@@ -14,9 +14,10 @@ import java.io.Serializable;
 @Entity
 public class Quote implements Serializable{
 
-    @PrimaryKey(autoGenerate = true)
+
     private int id=0;
 
+    @PrimaryKey
     private String quote;
     private String author;
     private String category;
