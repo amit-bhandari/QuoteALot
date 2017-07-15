@@ -6,7 +6,7 @@ A detailed guide on creating Android App by following google recommanded app arc
 
 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/hnNHJE5AFXM/0.jpg)](https://www.youtube.com/watch?v=hnNHJE5AFXM)
+[![Quote A Lot](https://img.youtube.com/vi/hnNHJE5AFXM/0.jpg)](https://www.youtube.com/watch?v=hnNHJE5AFXM)
 
 https://www.youtube.com/watch?v=hnNHJE5AFXM
 
